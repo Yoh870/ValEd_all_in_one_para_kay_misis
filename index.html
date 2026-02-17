@@ -521,10 +521,10 @@ textarea.form-ctrl { resize: vertical; min-height: 76px; }
 
   <!-- API Key input -->
   <div class="card" style="margin-bottom:20px;border:1.5px solid rgba(79,70,229,0.3);background:rgba(79,70,229,0.03)">
-    <div class="card-title" style="margin-bottom:10px">🔑 Anthropic API Key</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Required for AI question extraction. Your key is never stored or sent anywhere except directly to Anthropic.</div>
+    <div class="card-title" style="margin-bottom:10px">🔑 Gemini API Key</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Required for AI question extraction. Your key is never stored — sent directly to Google Gemini.</div>
     <div style="display:flex;gap:10px;align-items:center">
-      <input type="password" class="form-ctrl" id="api-key-input" placeholder="sk-ant-..." style="flex:1;font-family:'JetBrains Mono',monospace;font-size:12px">
+      <input type="password" class="form-ctrl" id="api-key-input" placeholder="AIza..." style="flex:1;font-family:'JetBrains Mono',monospace;font-size:12px">
       <button class="btn btn-outline btn-sm" onclick="toggleApiKeyVis()">👁 Show</button>
     </div>
   </div>
@@ -1139,20 +1139,13 @@ ${text.substring(0,8000)}`;
     updateStep(1,'done');updateStep(2,'active');
 
     const apiKey=document.getElementById('api-key-input').value.trim();
-    if(!apiKey){throw new Error('Please enter your Anthropic API key above before importing.');}
-    const response=await fetch('https://api.anthropic.com/v1/messages',{
+    if(!apiKey){throw new Error('Please enter your Gemini API key above before importing.');}
+    const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:4000,
-        system:'You extract or generate exam questions from text. Always return only valid JSON array.',
-        messages:[{role:'user',content:prompt}]
+        contents:[{parts:[{text:prompt}]}],
+        generationConfig:{maxOutputTokens:4000,temperature:0.3}
       })
     });
 
@@ -1160,9 +1153,10 @@ ${text.substring(0,8000)}`;
     updateStep(2,'done');updateStep(3,'active');
 
     const data=await response.json();
-    if(data.error){throw new Error(data.error.message);}
+    if(data.error){throw new Error(data.error.message||JSON.stringify(data.error));}
+    if(!data.candidates||!data.candidates[0]){throw new Error('No response from Gemini.');}
 
-    const raw=data.content[0].text;
+    const raw=data.candidates[0].content.parts[0].text;
     let parsed;
     try{
       // Try to find JSON array in response
