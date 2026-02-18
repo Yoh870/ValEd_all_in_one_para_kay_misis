@@ -569,13 +569,303 @@ textarea.form-ctrl { resize: vertical; min-height: 76px; }
 
 /* ── FC CATEGORY ENHANCEMENT ── */
 .fc-cat-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE SYSTEM
+   Breakpoints: 768px (tablet), 480px (mobile)
+══════════════════════════════════════════════════════ */
+
+/* ── MOBILE TOP BAR ── */
+.mobile-topbar {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--ink);
+  z-index: 200;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.mobile-topbar .logo-name { font-weight: 800; font-size: 16px; color: #fff; }
+.mobile-topbar .logo-sub  { font-size: 9px; color: rgba(255,255,255,0.4); }
+
+.hamburger {
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 4px; flex-shrink: 0;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: rgba(255,255,255,0.8); border-radius: 2px;
+  transition: all .25s;
+}
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* ── SIDEBAR OVERLAY (mobile) ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 149;
+  backdrop-filter: blur(2px);
+}
+.sidebar-overlay.on { display: block; }
+
+/* ── MOBILE BOTTOM NAV ── */
+.bottom-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  z-index: 200;
+  padding: 8px 4px 12px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  gap: 0;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+.bnav-btn {
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  transition: all .15s;
+  flex: 1;
+  max-width: 72px;
+}
+.bnav-btn .bnav-icon { font-size: 20px; line-height: 1; }
+.bnav-btn .bnav-lbl  { font-size: 9.5px; font-weight: 600; color: rgba(255,255,255,0.45); letter-spacing: .2px; }
+.bnav-btn.active .bnav-lbl { color: #fff; }
+.bnav-btn.active .bnav-icon { filter: drop-shadow(0 0 6px rgba(124,58,237,0.7)); }
+.bnav-btn:hover .bnav-lbl { color: rgba(255,255,255,0.8); }
+
+/* ── TABLET (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── TABLET (≤ 768px) ── */
+@media (max-width: 768px) {
+  /* Layout shift */
+  .mobile-topbar { display: flex; }
+  .bottom-nav    { display: flex; }
+
+  .sidebar {
+    width: 272px;
+    transform: translateX(-100%);
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+    top: 0; z-index: 150;
+    padding-top: 70px; /* below topbar */
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .main {
+    margin-left: 0;
+    padding: 80px 16px 90px; /* top: topbar, bottom: bottomnav */
+  }
+
+  /* Grids */
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .g2 { grid-template-columns: 1fr; gap: 14px; }
+  .g3 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+  /* Page header */
+  .page-title { font-size: 21px; }
+  .page-sub   { font-size: 12px; }
+
+  /* Stat cards */
+  .stat-val  { font-size: 22px; }
+  .stat-card { padding: 14px 12px; }
+
+  /* Cards */
+  .card { padding: 16px; }
+  .card-title { font-size: 14px; }
+
+  /* Flashcard */
+  .fc-scene { height: 270px; }
+  .fc-q  { font-size: 16px; }
+  .fc-a  { font-size: 15px; }
+  .fc-face { padding: 28px 20px; }
+
+  .pill { font-size: 11px; padding: 4px 10px; }
+
+  /* Quiz choices — single column */
+  .choices { grid-template-columns: 1fr; }
+
+  /* Quiz header */
+  .quiz-header { flex-wrap: wrap; gap: 10px; }
+  .qprog-wrap { min-width: 0; width: 100%; order: 0; }
+  .timer-pill { order: 1; }
+  .quiz-header .btn { order: 2; margin-left: 0 !important; }
+
+  /* Situational */
+  .sit-scenario { padding: 16px 18px 14px; }
+  .sit-question-wrap { padding: 16px 18px 6px; }
+  .sit-choices { padding: 12px 18px 16px; }
+  .sit-footer  { padding: 0 18px 16px; flex-wrap: wrap; gap: 10px; }
+  .sit-q-text  { font-size: 15px; }
+  .sit-feedback { margin: 0 18px 16px; }
+  .sit-score-bar { gap: 8px; padding: 14px 16px; }
+  .sit-score-pill { font-size: 12px; padding: 6px 12px; }
+
+  /* Subject cards */
+  .subj-card { padding: 16px; }
+
+  /* Quiz setup */
+  .quiz-setup-card { padding: 18px; }
+
+  /* Score grid */
+  .score-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+  /* Import zone */
+  .import-zone { padding: 32px 20px; }
+
+  /* Cat tabs */
+  .cat-tabs { gap: 6px; }
+  .cat-tab  { padding: 7px 14px; font-size: 11px; }
+
+  /* Results modal */
+  .modal { padding: 28px 20px; }
+  .modal-title { font-size: 20px; }
+
+  /* Page header flex */
+  .page-header > div { flex-direction: column; align-items: flex-start !important; gap: 8px !important; }
+
+  /* Rate row */
+  .rate-row { gap: 8px; }
+  .rate-btn { padding: 8px 14px; font-size: 12px; }
+
+  /* Sit score bar: wrap */
+  .sit-score-bar { flex-wrap: wrap; }
+}
+
+/* ── MOBILE (≤ 480px) ── */
+@media (max-width: 480px) {
+  .main { padding: 70px 12px 86px; }
+
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .g3 { grid-template-columns: 1fr; }
+
+  .page-title { font-size: 19px; }
+  .stat-val   { font-size: 20px; }
+  .stat-card  { padding: 12px 10px; }
+
+  /* Flashcard */
+  .fc-scene   { height: 240px; }
+  .fc-q       { font-size: 14px; line-height: 1.5; }
+  .fc-a       { font-size: 13px; }
+  .fc-face    { padding: 22px 16px; }
+  .fc-exp-box { font-size: 11px; padding: 8px 12px; }
+
+  /* Nav circles */
+  .nav-circle { width: 38px; height: 38px; font-size: 16px; }
+  .fc-count   { font-size: 12px; }
+
+  /* Situational */
+  .sit-q-text       { font-size: 14px; }
+  .sit-choice-text  { font-size: 13px; }
+  .sit-letter       { width: 28px; height: 28px; font-size: 11px; }
+  .sit-choice       { padding: 12px 14px; gap: 10px; }
+  .sit-scenario-text { font-size: 13px; }
+
+  /* Buttons */
+  .btn-lg { padding: 11px 20px; font-size: 13px; }
+
+  /* Quick actions */
+  .quick-actions .btn { font-size: 13px; }
+
+  /* Cat tabs scroll */
+  .cat-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+  .cat-tabs::-webkit-scrollbar { display: none; }
+  .cat-tab { flex-shrink: 0; }
+
+  /* Pill row scroll */
+  .pill-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+  .pill-row::-webkit-scrollbar { display: none; }
+  .pill { flex-shrink: 0; }
+
+  /* Score grid */
+  .score-grid { grid-template-columns: 1fr; gap: 8px; }
+
+  /* Choices */
+  .choice-btn  { padding: 12px 14px; font-size: 12px; }
+  .choice-letter { width: 24px; height: 24px; font-size: 10px; }
+
+  /* Form */
+  .choice-inputs-grid { grid-template-columns: 1fr; }
+
+  /* History */
+  .history-item { padding: 12px 14px; gap: 10px; }
+  .hist-pct     { font-size: 18px; }
+  .hist-rank    { width: 34px; height: 34px; font-size: 12px; }
+
+  /* Import */
+  .import-zone { padding: 24px 14px; }
+  .import-title { font-size: 15px; }
+  .import-icon  { font-size: 36px; }
+
+  /* Bottom nav adjustments */
+  .bnav-btn  { padding: 6px 8px; }
+  .bnav-lbl  { font-size: 9px; }
+}
+
+/* ── TOUCH IMPROVEMENTS ── */
+@media (hover: none) {
+  .choice-btn:hover:not(:disabled),
+  .sit-choice:hover:not(:disabled) { 
+    border-color: var(--border); 
+    background: var(--surface); 
+    color: var(--text);
+  }
+  .btn-accent:hover { transform: none; }
+  .subj-card:hover  { transform: none; }
+}
 </style>
 </head>
 <body>
+
+<!-- ── MOBILE TOP BAR ── -->
+<div class="mobile-topbar">
+  <button class="hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="logo-mark" style="width:30px;height:30px;border-radius:8px;font-size:15px;background:linear-gradient(135deg,#4F46E5,#7C3AED);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(79,70,229,.4)">📚</div>
+  <div>
+    <div class="logo-name">LET Prep Pro</div>
+    <div class="logo-sub">Board Exam Reviewer</div>
+  </div>
+</div>
+
+<!-- ── SIDEBAR OVERLAY ── -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- ── MOBILE BOTTOM NAV ── -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bnav-btn active" id="bnav-dashboard" onclick="goMobile('dashboard')">
+    <span class="bnav-icon">🏠</span><span class="bnav-lbl">Home</span>
+  </button>
+  <button class="bnav-btn" id="bnav-flashcards" onclick="goMobile('flashcards')">
+    <span class="bnav-icon">🃏</span><span class="bnav-lbl">Cards</span>
+  </button>
+  <button class="bnav-btn" id="bnav-sit" onclick="goMobile('sit')">
+    <span class="bnav-icon">✏️</span><span class="bnav-lbl">MCQ</span>
+  </button>
+  <button class="bnav-btn" id="bnav-scores" onclick="goMobile('scores')">
+    <span class="bnav-icon">📊</span><span class="bnav-lbl">Scores</span>
+  </button>
+  <button class="bnav-btn" id="bnav-more" onclick="toggleSidebar()">
+    <span class="bnav-icon">☰</span><span class="bnav-lbl">More</span>
+  </button>
+</nav>
 <div class="shell">
 
 <!-- ── SIDEBAR ── -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
   <div class="logo-wrap">
     <div class="logo-mark">📚</div>
     <div>
@@ -1746,22 +2036,8 @@ let sitDeck = [], sitIdx = 0, sitAnswered = false;
 let sitSession = { cor: 0, wro: 0, tot: 0 };
 
 // ═══ NAVIGATION ═══
-function go(page){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const pg = document.getElementById('pg-'+page);
-  if(pg) pg.classList.add('on');
-  const nb=document.querySelector(`[data-page="${page}"]`);
-  if(nb)nb.classList.add('active');
-  if(page==='dashboard')renderDash();
-  if(page==='subjects')renderSubjects();
-  if(page==='flashcards')initFlash();
-  if(page==='sit')initSit();
-  if(page==='quiz')initQuizSetup();
-  if(page==='scores')renderScores();
-  if(page==='add')renderAddPage();
-  updateSidebarBadges();
-}
+// go() is defined in the mobile nav section below with bottom-nav sync
+
 
 // ═══ STUDY MODE CONTROL ═══
 function setStudyMode(mode){
@@ -2514,6 +2790,74 @@ function toast(msg){
   clearTimeout(toastTO);
   toastTO=setTimeout(()=>el.classList.remove('on'),3500);
 }
+
+// ═══ MOBILE NAV ═══
+const BNAV_PAGES = ['dashboard','flashcards','sit','scores'];
+
+function toggleSidebar(){
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const ham = document.getElementById('hamburger-btn');
+  const isOpen = sidebar.classList.contains('open');
+  if(isOpen){ closeSidebar(); }
+  else {
+    sidebar.classList.add('open');
+    overlay.classList.add('on');
+    ham.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('on');
+  const ham = document.getElementById('hamburger-btn');
+  if(ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function goMobile(page){
+  closeSidebar();
+  // Update bottom nav active state
+  BNAV_PAGES.forEach(p=>{
+    const btn = document.getElementById('bnav-'+p);
+    if(btn) btn.classList.toggle('active', p===page);
+  });
+  // For study modes via bottom nav
+  if(page==='flashcards'){ setStudyMode('flashcards'); return; }
+  if(page==='sit'){ setStudyMode('situational'); return; }
+  go(page);
+}
+
+// go() — unified navigation with bottom-nav sync + sidebar close
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const pg = document.getElementById('pg-'+page);
+  if(pg) pg.classList.add('on');
+  const nb=document.querySelector(`[data-page="${page}"]`);
+  if(nb)nb.classList.add('active');
+  if(page==='dashboard')renderDash();
+  if(page==='subjects')renderSubjects();
+  if(page==='flashcards')initFlash();
+  if(page==='sit')initSit();
+  if(page==='quiz')initQuizSetup();
+  if(page==='scores')renderScores();
+  if(page==='add')renderAddPage();
+  updateSidebarBadges();
+  // Sync bottom nav
+  BNAV_PAGES.forEach(p=>{
+    const btn = document.getElementById('bnav-'+p);
+    if(btn) btn.classList.toggle('active', p===page);
+  });
+  // Close sidebar on navigation (mobile)
+  closeSidebar();
+  // Scroll to top
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Close sidebar on ESC
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSidebar(); });
 
 // ═══ INIT ═══
 renderDash();
