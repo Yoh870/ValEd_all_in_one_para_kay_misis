@@ -2,8 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>LET Prep Pro — ValEd, ProfEd & GenEd</title>
+
+<!-- ── PWA Manifest ── -->
+<link rel="manifest" href="manifest.json">
+
+<!-- ── Theme Color ── -->
+<meta name="theme-color" content="#4F46E5">
+
+<!-- ── iOS PWA Support ── -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LETPrep">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<!-- ── Android / General ── -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="LET Prep Pro">
+<meta name="description" content="LET Reviewer — ValEd, ProfEd & GenEd">
+
+<!-- ── Service Worker Registration ── -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('SW registered:', reg.scope))
+        .catch(err => console.warn('SW failed:', err));
+    });
+  }
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
