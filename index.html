@@ -967,6 +967,70 @@ textarea.form-ctrl { resize: vertical; min-height: 76px; }
 </head>
 <body>
 
+<!-- ── PASSWORD LOCK SCREEN ── -->
+<div id="lock-screen" style="
+  position:fixed;inset:0;z-index:99999;
+  background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#4c1d95 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',sans-serif;
+">
+  <div style="
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:24px;
+    padding:48px 40px;
+    width:100%;max-width:360px;
+    text-align:center;
+    backdrop-filter:blur(20px);
+    box-shadow:0 25px 60px rgba(0,0,0,0.4);
+  ">
+    <div style="font-size:48px;margin-bottom:16px;">📚</div>
+    <h2 style="color:#fff;font-size:22px;font-weight:700;margin:0 0 6px;">LET Prep Pro</h2>
+    <p style="color:rgba(255,255,255,0.5);font-size:13px;margin:0 0 32px;">Enter password to continue</p>
+
+    <input id="pw-input" type="password" placeholder="Password"
+      onkeydown="if(event.key==='Enter')checkPassword()"
+      style="
+        width:100%;box-sizing:border-box;
+        padding:14px 18px;border-radius:12px;
+        border:1.5px solid rgba(255,255,255,0.2);
+        background:rgba(255,255,255,0.1);
+        color:#fff;font-size:16px;letter-spacing:3px;
+        outline:none;text-align:center;
+        transition:border .2s;
+      "
+    />
+    <p id="pw-error" style="color:#f87171;font-size:13px;margin:10px 0 0;min-height:18px;"></p>
+
+    <button onclick="checkPassword()" style="
+      margin-top:20px;width:100%;padding:14px;
+      border-radius:12px;border:none;cursor:pointer;
+      background:linear-gradient(135deg,#6366f1,#8b5cf6);
+      color:#fff;font-size:15px;font-weight:600;
+      box-shadow:0 4px 15px rgba(99,102,241,0.4);
+      transition:opacity .2s;
+    " onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+      Unlock →
+    </button>
+  </div>
+</div>
+
+<script>
+function checkPassword(){
+  const val = document.getElementById('pw-input').value;
+  if(val === '070223'){
+    document.getElementById('lock-screen').style.display='none';
+  } else {
+    const err = document.getElementById('pw-error');
+    err.textContent = 'Incorrect password. Try again.';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+    setTimeout(()=>err.textContent='', 2500);
+  }
+}
+document.getElementById('pw-input').focus();
+</script>
+
 <!-- ── MOBILE TOP BAR ── -->
 <div class="mobile-topbar">
   <button class="hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Menu">
